@@ -36,8 +36,10 @@ jobs:
           projectId: myprofile-d3733
 
       - name: Deploy Firestore rules
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only firestore --project myprofile-d3733
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > /tmp/sa.json
+          npx firebase-tools@latest deploy --only firestore \
+            --project myprofile-d3733 \
+            --non-interactive
         env:
-          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/sa.json
